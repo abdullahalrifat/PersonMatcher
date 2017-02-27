@@ -2,13 +2,24 @@ package com.example.abdullah.personmatcher.Fragment;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+
+import com.example.abdullah.personmatcher.DataBase.ReadMenu;
+import com.example.abdullah.personmatcher.Menu.FindMenu;
 import com.example.abdullah.personmatcher.R;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,10 +39,13 @@ public class CatagoryFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    LinearLayout linearLayout;
+
     private OnFragmentInteractionListener mListener;
 
     public CatagoryFragment() {
         // Required empty public constructor
+
     }
 
     /**
@@ -59,13 +73,30 @@ public class CatagoryFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
+    public void onStart()
+    {
+        super.onStart();
+        load();
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_catagory, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+       // TODO Auto-generated method stub
+        super.onViewCreated(view, savedInstanceState);
+
+        linearLayout = (LinearLayout) view.findViewById(R.id.linearLayout);
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -101,4 +132,33 @@ public class CatagoryFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
+    //my working area starts
+    public static ArrayList menuItems = new ArrayList<>();
+    private static final String TAG_PID = "id";
+    private static final String TAG_NAME = "Name";
+    public void load()
+    {
+        GetMenus();
+    }
+    public void GetMenus()
+    {
+                FindMenu find=new FindMenu();
+                menuItems=find.getResults();
+
+                for(int i=0;i<menuItems.size();i++)
+                {
+                    HashMap<String, String> tmpData = (HashMap<String,String>) menuItems.get(i);
+                    String Name=tmpData.get(TAG_NAME);
+                    Button btn = new Button(getActivity());
+                    btn.setText(Name);
+                    btn.setTag(Name.toLowerCase());
+                    btn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                    linearLayout.addView(btn);
+                }
+    }
+
+
+
 }

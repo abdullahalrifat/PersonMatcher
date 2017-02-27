@@ -53,27 +53,7 @@ public class ReadMenu
     JSONArray products = null;
     public void load()
     {
-        // Loading products in Background Thread
-        new LoadAllProducts().execute();
-    }
-    /**
-     * Background Async Task to Load all product by making HTTP Request
-     * */
-    class LoadAllProducts extends AsyncTask<String, String, String> {
 
-        /**
-         * Before starting background thread Show Progress Dialog
-         */
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-        }
-
-        /**
-         * getting All products from url
-         */
-        protected String doInBackground(String... args) {
 
             productsList.clear();
             // Building Parameters
@@ -119,15 +99,7 @@ public class ReadMenu
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            return null;
-        }
 
-        /**
-         * After completing background task Dismiss the progress dialog
-         **/
-        protected void onPostExecute(String file_url) {
-
-        }
     }
 
 }

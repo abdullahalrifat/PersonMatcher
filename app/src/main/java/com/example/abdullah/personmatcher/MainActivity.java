@@ -1,5 +1,6 @@
 package com.example.abdullah.personmatcher;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.abdullah.personmatcher.Activity.AlertDialogueBuilder;
 import com.example.abdullah.personmatcher.Fragment.CatagoryFragment;
 import com.example.abdullah.personmatcher.Fragment.MainFragment;
 import com.example.abdullah.personmatcher.Fragment.MapFragment;
@@ -27,9 +29,7 @@ public class MainActivity extends AppCompatActivity
 
 
 
-    public static ArrayList menuItems = new ArrayList<>();
-    private static final String TAG_PID = "id";
-    private static final String TAG_NAME = "Name";
+
 
 
 
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity
                     .commit();
         }
 
-        addMenu();
+        new LoadAll().execute();
 
     }
 
@@ -135,15 +135,29 @@ public class MainActivity extends AppCompatActivity
         fragmentManager.beginTransaction()
                 .replace(R.id.frame, fragment)
                 .commit();
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    public void addMenu()
-    {
-        FindMenu find=new FindMenu();
-        find.Load();
-        menuItems=find.getResults();
+    class LoadAll extends AsyncTask<String, String, String> {
+        /**
+         * getting All products from url
+         */
+        protected String doInBackground(String... args)
+        {
+            try
+            {
+                FindMenu find=new FindMenu();
+                find.Load();
+            }
+            catch(Exception e)
+            {
+                AlertDialogueBuilder al=new AlertDialogueBuilder();
+                al.DialogueBox(MainActivity.this,"No Internet or Server Down");
+            }
+            return  null;
+        }
     }
 }

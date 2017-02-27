@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class FindMenu
 {
-    ArrayList results = new ArrayList<>();
+    private static ArrayList results = new ArrayList<>();
 
     public ArrayList getResults() {
         return results;
@@ -20,7 +20,6 @@ public class FindMenu
     {
         ReadMenu read=new ReadMenu();
         read.load();
-
         results=read.getList();
     }
 }
