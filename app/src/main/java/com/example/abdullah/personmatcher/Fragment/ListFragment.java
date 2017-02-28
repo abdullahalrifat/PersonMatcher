@@ -7,9 +7,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.abdullah.personmatcher.Menu.FindList;
 import com.example.abdullah.personmatcher.R;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,12 +30,20 @@ public class ListFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+
+    private static final String TAG_PID = "id";
+    private static final String TAG_NAME = "Name";
+    private static final String TAG_LOCATION = "Location";
+    private static final String TAG_PHONE = "Phone";
+    private static final String TAG_LEVEL = "Level";
+    private static ArrayList<HashMap<String, ArrayList>> lists = new ArrayList<HashMap<String, ArrayList>>();
+    public static String SelectedButton;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    View RootView;
     private OnFragmentInteractionListener mListener;
-
+    ListView listView ;
     public ListFragment() {
         // Required empty public constructor
 
@@ -67,10 +80,10 @@ public class ListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
-
+        RootView=inflater.inflate(R.layout.fragment_list, container, false);
+        loadList();
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_list, container, false);
+        return RootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -104,5 +117,35 @@ public class ListFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+    public void loadList()
+    {
+        SelectedButton=CatagoryFragment.SelectedButton;
+        // Get ListView object from xml
+         listView = (ListView) RootView.findViewById(R.id.list);
+        FindList f=new FindList();
+        this.lists= f.getLists();
+        ArrayList<HashMap<String, String>> values=new ArrayList<>();
+
+        for(int i=0;i<lists.size();i++)
+        {
+            HashMap<String, ArrayList> hash=new HashMap<String, ArrayList>();
+            hash=lists.get(i);
+            if(hash.containsKey(SelectedButton))
+            {
+                values=hash.get(SelectedButton);
+            }
+        }
+
+
+        String[] v=new String[values.size()];
+        for(int i=0;i<values.size();i++)
+        {
+            HashMap<String, String> tmpData = (HashMap<String,String>) values.get(i);
+
+            v[i]=tmpData.get(TAG_NAME);
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,v);
+        listView.setAdapter(adapter);
     }
 }

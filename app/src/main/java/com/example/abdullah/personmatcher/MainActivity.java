@@ -156,6 +156,7 @@ public class MainActivity extends AppCompatActivity
 
                 //getting al the lists and person details
                 FindList findlist=new FindList();
+                findlist.load();
             }
             catch(Exception e)
             {

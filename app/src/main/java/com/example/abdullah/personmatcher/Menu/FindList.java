@@ -16,7 +16,12 @@ public class FindList
     String php;
     private static final String TAG_MENUNAME = "MenuName";
     private static final String TAG_FILENAME = "FileName";
-    public FindList()
+
+    public static ArrayList<HashMap<String, ArrayList>> getLists() {
+        return lists;
+    }
+
+    public void load()
     {
         FindFileNames files=new FindFileNames();
         files.Load();
@@ -31,7 +36,7 @@ public class FindList
             ArrayList list=new ArrayList();
             list=read.getList();
             HashMap<String, ArrayList>tmp=new HashMap<String, ArrayList>();
-            tmp.put(TAG_MENUNAME, list);
+            tmp.put(tmpData.get(TAG_MENUNAME), list);
             lists.add(tmp);
         }
     }
