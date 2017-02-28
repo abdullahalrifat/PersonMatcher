@@ -35,7 +35,7 @@ public class ReadMenu
 
 
 
-    public static String ip = "10.0.3.2";
+    public static String ip = "192.168.1.103";
     public static String php = "get_all_menu";
     // url to get all products list
     private static String url_all_products = "http://" + ip + "/android_connect/PersonFinder/" + php + ".php";

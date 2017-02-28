@@ -162,6 +162,7 @@ public class CatagoryFragment extends Fragment {
     }
     public void GetMenus()
     {
+
                 FindMenu find=new FindMenu();
                 menuItems=find.getResults();
 

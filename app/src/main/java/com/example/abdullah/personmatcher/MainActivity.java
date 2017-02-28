@@ -1,5 +1,8 @@
 package com.example.abdullah.personmatcher;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -72,8 +75,15 @@ public class MainActivity extends AppCompatActivity
                     .replace(R.id.frame, fragment)
                     .commit();
         }
-
-        new LoadAll().execute();
+        if (isNetworkAvailable() ==true)
+        {
+            new LoadAll().execute();
+        }
+        else
+        {
+            AlertDialogueBuilder al=new AlertDialogueBuilder();
+            al.DialogueBox(MainActivity.this,"No Internet or Server Down");
+        }
 
     }
 
@@ -141,7 +151,12 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
     class LoadAll extends AsyncTask<String, String, String> {
         /**
          * getting All products from url
