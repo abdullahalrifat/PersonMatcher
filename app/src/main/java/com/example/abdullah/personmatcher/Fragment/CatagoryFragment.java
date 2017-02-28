@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +41,7 @@ public class CatagoryFragment extends Fragment {
     private String mParam2;
 
     LinearLayout linearLayout;
-
+    public static String SelectedButton=null;
     private OnFragmentInteractionListener mListener;
 
     public CatagoryFragment() {
@@ -75,6 +76,22 @@ public class CatagoryFragment extends Fragment {
         }
 
     }
+    View.OnClickListener getOnClickDoSomething(final Button button) {
+        return new View.OnClickListener() {
+            public void onClick(View v) {
+
+                SelectedButton = button.getText().toString().trim();
+                // update the main content by replacing fragments
+                Fragment fragment;
+                fragment=new ListFragment();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+                fragmentManager.beginTransaction()
+                        .replace(R.id.frame, fragment)
+                        .commit();
+            }
+        };
+    }
 
     public void onStart()
     {
@@ -96,6 +113,7 @@ public class CatagoryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         linearLayout = (LinearLayout) view.findViewById(R.id.linearLayout);
+
 
     }
 
@@ -153,11 +171,12 @@ public class CatagoryFragment extends Fragment {
                     String Name=tmpData.get(TAG_NAME);
                     Button btn = new Button(getActivity());
                     btn.setText(Name);
-                    btn.setTag(Name.toLowerCase());
                     btn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                    btn.setOnClickListener(getOnClickDoSomething(btn));
                     linearLayout.addView(btn);
                 }
     }
+
 
 
 

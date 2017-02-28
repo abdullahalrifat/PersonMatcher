@@ -20,6 +20,7 @@ import com.example.abdullah.personmatcher.Activity.AlertDialogueBuilder;
 import com.example.abdullah.personmatcher.Fragment.CatagoryFragment;
 import com.example.abdullah.personmatcher.Fragment.MainFragment;
 import com.example.abdullah.personmatcher.Fragment.MapFragment;
+import com.example.abdullah.personmatcher.Menu.FindList;
 import com.example.abdullah.personmatcher.Menu.FindMenu;
 
 import java.util.ArrayList;
@@ -149,8 +150,12 @@ public class MainActivity extends AppCompatActivity
         {
             try
             {
+                //getting menus
                 FindMenu find=new FindMenu();
                 find.Load();
+
+                //getting al the lists and person details
+                FindList findlist=new FindList();
             }
             catch(Exception e)
             {
