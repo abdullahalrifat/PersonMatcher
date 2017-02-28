@@ -7,9 +7,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.abdullah.personmatcher.Activity.AlertDialogueBuilder;
+import com.example.abdullah.personmatcher.MainActivity;
 import com.example.abdullah.personmatcher.Menu.FindList;
 import com.example.abdullah.personmatcher.R;
 
@@ -118,6 +121,7 @@ public class ListFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+    ArrayList<HashMap<String, String>> values=new ArrayList<>();
     public void loadList()
     {
         SelectedButton=CatagoryFragment.SelectedButton;
@@ -125,7 +129,7 @@ public class ListFragment extends Fragment {
          listView = (ListView) RootView.findViewById(R.id.list);
         FindList f=new FindList();
         this.lists= f.getLists();
-        ArrayList<HashMap<String, String>> values=new ArrayList<>();
+        values.clear();
 
         for(int i=0;i<lists.size();i++)
         {
@@ -147,5 +151,23 @@ public class ListFragment extends Fragment {
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,v);
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1,
+                                    int position, long arg3) {
+                // TODO Auto-generated method stub
+                HashMap<String, String> tmpData = (HashMap<String,String>) values.get(position);
+
+
+                AlertDialogueBuilder al=new AlertDialogueBuilder();
+                String show="Phone : "+tmpData.get(TAG_PHONE)+"\n"+"Level : "+tmpData.get(TAG_LEVEL);
+                al.setTitle("Details...");
+                al.DialogueBox(getActivity(),show);
+
+
+            }
+        });
     }
 }
