@@ -4,11 +4,18 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
+import com.example.abdullah.personmatcher.Menu.FindMenu;
 import com.example.abdullah.personmatcher.R;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,6 +35,8 @@ public class MapFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    LinearLayout linearLayout;
+    public static String SelectedButton=null;
     private OnFragmentInteractionListener mListener;
 
     public MapFragment() {
@@ -60,14 +69,42 @@ public class MapFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+    View.OnClickListener getOnClickDoSomething(final Button button) {
+        return new View.OnClickListener() {
+            public void onClick(View v) {
 
+                SelectedButton = button.getText().toString().trim();
+                // update the main content by replacing fragments
+                Fragment fragment;
+                fragment=new MapShowFragment();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+                fragmentManager.beginTransaction()
+                        .replace(R.id.frame, fragment)
+                        .commit();
+            }
+        };
+    }
+    public void onStart()
+    {
+        super.onStart();
+        load();
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_map, container, false);
     }
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        // TODO Auto-generated method stub
+        super.onViewCreated(view, savedInstanceState);
 
+        linearLayout = (LinearLayout) view.findViewById(R.id.linearLayoutMap);
+
+
+    }
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -100,4 +137,32 @@ public class MapFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+    //my working area starts
+    public static ArrayList menuItems = new ArrayList<>();
+    private static final String TAG_PID = "id";
+    private static final String TAG_NAME = "Name";
+    public void load()
+    {
+        GetMenus();
+    }
+    public void GetMenus()
+    {
+
+        FindMenu find=new FindMenu();
+        menuItems=find.getResults();
+
+        for(int i=0;i<menuItems.size();i++)
+        {
+            HashMap<String, String> tmpData = (HashMap<String,String>) menuItems.get(i);
+            String Name=tmpData.get(TAG_NAME);
+            Button btn = new Button(getActivity());
+            btn.setText(Name);
+            btn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            btn.setOnClickListener(getOnClickDoSomething(btn));
+            linearLayout.addView(btn);
+        }
+    }
+
+
+
 }
