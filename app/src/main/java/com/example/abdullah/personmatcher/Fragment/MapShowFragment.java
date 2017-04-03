@@ -1,24 +1,19 @@
 package com.example.abdullah.personmatcher.Fragment;
 
 import android.content.Context;
-import android.location.Criteria;
+import android.content.IntentSender;
 import android.location.Location;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import com.example.abdullah.personmatcher.Activity.AlertDialogueBuilder;
 import com.example.abdullah.personmatcher.Menu.FindList;
 import com.example.abdullah.personmatcher.R;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -32,6 +27,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
+//to use current location api
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -40,7 +45,7 @@ import java.util.StringTokenizer;
  * Use the {@link MapShowFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MapShowFragment extends Fragment implements OnMapReadyCallback {
+public class MapShowFragment extends Fragment implements OnMapReadyCallback{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -91,6 +96,12 @@ public class MapShowFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
+
+
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -126,10 +137,11 @@ public class MapShowFragment extends Fragment implements OnMapReadyCallback {
             mListener.onFragmentInteraction(uri);
         }
     }
-
+    Context context;
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        this.context=context;
     }
 
     @Override
@@ -137,6 +149,9 @@ public class MapShowFragment extends Fragment implements OnMapReadyCallback {
         super.onDetach();
         mListener = null;
     }
+
+
+
 
 
 
@@ -190,8 +205,14 @@ public class MapShowFragment extends Fragment implements OnMapReadyCallback {
         }
 
 
+
+           // Liberty= CameraPosition.builder().target(new LatLng(currentLatitude,currentLongitude)).zoom(16).bearing(0).tilt(45).build();
+
+
+
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(Liberty));
     }
+
 
     /**
      * This interface must be implemented by activities that contain this
@@ -209,9 +230,5 @@ public class MapShowFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-    public void loadList()
-    {
 
-
-    }
 }

@@ -17,7 +17,7 @@ public class FindFileNames
         return files;
     }
 
-    public void Load()
+    public void Load() throws Exception
     {
         ReadPhpFiles read=new ReadPhpFiles();
         read.load();

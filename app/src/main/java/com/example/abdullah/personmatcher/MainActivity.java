@@ -1,6 +1,7 @@
 package com.example.abdullah.personmatcher;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -9,6 +10,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,8 +21,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.example.abdullah.personmatcher.Activity.AlertDialogueBuilder;
+import com.example.abdullah.personmatcher.FixedData.IP;
 import com.example.abdullah.personmatcher.Fragment.CatagoryFragment;
 import com.example.abdullah.personmatcher.Fragment.MainFragment;
 import com.example.abdullah.personmatcher.Fragment.MapFragment;
@@ -75,16 +81,8 @@ public class MainActivity extends AppCompatActivity
                     .replace(R.id.frame, fragment)
                     .commit();
         }
-        if (isNetworkAvailable() ==true)
-        {
-            new LoadAll().execute();
-        }
-        else
-        {
-            AlertDialogueBuilder al=new AlertDialogueBuilder();
-            al.DialogueBox(MainActivity.this,"No Internet or Server Down");
-        }
 
+        LoadAllData();
     }
 
     @Override
@@ -116,6 +114,7 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
 
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -144,6 +143,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         fragmentManager.beginTransaction()
+
                 .replace(R.id.frame, fragment)
                 .commit();
 
@@ -156,6 +156,24 @@ public class MainActivity extends AppCompatActivity
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+    private void LoadAllData()
+    {
+        if (isNetworkAvailable() ==true)
+        {
+            try {
+                new LoadAll().execute();
+            }catch (Exception e)
+            {
+                AlertDialogueBuilder al=new AlertDialogueBuilder();
+                al.DialogueBox(MainActivity.this,"Server Down...");
+            }
+        }
+        else
+        {
+            AlertDialogueBuilder al=new AlertDialogueBuilder();
+            al.DialogueBox(MainActivity.this,"No Internet Connection...");
+        }
     }
     class LoadAll extends AsyncTask<String, String, String> {
         /**
@@ -181,4 +199,6 @@ public class MainActivity extends AppCompatActivity
             return  null;
         }
     }
+
+
 }

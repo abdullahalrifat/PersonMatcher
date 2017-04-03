@@ -16,7 +16,7 @@ public class FindMenu
         return results;
     }
 
-    public void Load()
+    public void Load() throws Exception
     {
         ReadMenu read=new ReadMenu();
         read.load();

@@ -21,7 +21,7 @@ public class FindList
         return lists;
     }
 
-    public void load()
+    public void load() throws Exception
     {
         FindFileNames files=new FindFileNames();
         files.Load();

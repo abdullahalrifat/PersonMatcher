@@ -6,6 +6,8 @@ package com.example.abdullah.personmatcher.DataBase;
 
 import android.util.Log;
 
+import com.example.abdullah.personmatcher.FixedData.IP;
+
 import org.apache.http.NameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,18 +26,12 @@ public class ReadPhpFiles
     ArrayList<HashMap<String, String>> productsList=new ArrayList<>();
 
 
-    /*
-    * 10.0.3.2 is for genymotion
-    *
-    * 10.0.2.2 is for normal avd
-    *
-    * to check ip for mobile run ifconfig
-    * */
 
 
 
 
-    public static String ip = "192.168.1.103";
+    static IP ips=new IP();
+    public static String ip = ips.getIp();
     public static String php = "get_all_fileName";
     // url to get all products list
     private static String url_all_products = "http://" + ip + "/android_connect/PersonFinder/" + php + ".php";
